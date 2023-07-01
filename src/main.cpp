@@ -14,16 +14,9 @@
 #include <EspWire.h>
 #include "Debug_Espfc.h"
 
-#ifdef ESPFC_WIFI_ALT
-  #include <ESP8266WiFi.h>
-#else
-  #include <WiFi.h>
-#endif
+
 
 Espfc::Espfc espfc;
-
-#ifdef ESPFC_MULTI_CORE
-  #if defined(ESPFC_FREE_RTOS)
 
     // ESP32 multicore
     #include "freertos/FreeRTOS.h"
@@ -53,47 +46,5 @@ Espfc::Espfc espfc;
       espfc.update();
     }
 
-  #elif defined(ESPFC_MULTI_CORE_RP2040)
 
-    // RP2040 multicore
-    volatile static bool setup1Done = false;
-    void setup1()
-    {
-      espfc.load();
-      espfc.beginOther();
-      setup1Done = true;
-    }
-    void setup()
-    {
-      while(!setup1Done); //wait for setup1()
-      espfc.begin();
-    }
-    void loop()
-    {
-      espfc.update();
-    }
-    void loop1()
-    {
-      espfc.updateOther();
-    }
 
-  #else
-    #error "No RTOS defined for multicore board"
-  #endif
-
-#else
-
-  // single core
-  void setup()
-  {
-    espfc.load();
-    espfc.beginOther();
-    espfc.begin();
-  }
-  void loop()
-  {
-    espfc.update();
-    espfc.updateOther();
-  }
-
-#endif

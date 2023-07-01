@@ -2,8 +2,8 @@
 
 #include "Esp.h"
 
-#define ESPFC_INPUT
-#define ESPFC_INPUT_PIN 13  // D7 - ppm
+
+#define ESPFC_INPUT_PIN 35  // D7 - ppm
 
 #define ESPFC_OUTPUT_COUNT 4 // 4 is minimum
 #define ESPFC_OUTPUT_0 0   // D3
